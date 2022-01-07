@@ -44,6 +44,23 @@ class App extends Component {
     });
   };
 
+  getVisibleTodos = () => {
+    const { todos, filter } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+
+    return todos.filter(todo =>
+      todo.text.toLowerCase().includes(normalizedFilter),
+    );
+  };
+
+  getCompletedTodoCount = () => {
+    const { todos, filter } = this.state;
+    return todos.reduce(
+      (total, todo) => (todo.completed ? total + 1 : total),
+      0,
+    );
+  };
+
   deleteTodo = todoId => {
     this.setState(prevState => {
       return {
@@ -88,15 +105,10 @@ class App extends Component {
     const { todos, filter } = this.state;
 
     const TotalTodoCount = todos.length;
-    const CompletedTodoCount = todos.reduce(
-      (total, todo) => (todo.completed ? total + 1 : total),
-      0,
-    );
 
-    const normalizedFilter = filter.toLowerCase();
-    const visibleTodos = todos.filter(todo =>
-      todo.text.toLowerCase().includes(normalizedFilter),
-    );
+    const CompletedTodoCount = this.getCompletedTodoCount();
+
+    const visibleTodos = this.getVisibleTodos();
 
     return (
       <>
