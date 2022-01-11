@@ -7,6 +7,8 @@ import TodoList from './components/TodoList';
 import initialToDos from './todos.json';
 import { TodoEditor } from './components/TodoList/TodoEditor/TodoEditor';
 import { Filter } from './components/TodoList/Filter';
+import { Modal } from './components/TodoList/Modal/Modal';
+
 /* import { Form } from './components/Form/Form'; */
 
 /* const colorPickerOptions = [
@@ -22,6 +24,11 @@ class App extends Component {
   state = {
     todos: initialToDos,
     filter: '',
+    showModal: false,
+  };
+
+  toggleModal = () => {
+    this.setState(state => ({ showModal: !state.showModal }));
   };
 
   addTodo = text => {
@@ -102,7 +109,7 @@ class App extends Component {
   //==================================== Form ===========================
 
   render() {
-    const { todos, filter } = this.state;
+    const { todos, filter, showModal } = this.state;
 
     const TotalTodoCount = todos.length;
 
@@ -112,6 +119,14 @@ class App extends Component {
 
     return (
       <>
+        <button type="button" onClick={this.toggleModal}>
+          Open modal
+        </button>
+        {showModal && (
+          <Modal onClose={this.toggleModal}>
+            <button onClick={this.toggleModal}>Close</button>
+          </Modal>
+        )}
         {/* <Form onSubmit={this.handlerFormSubmit}/> */}
         {/* <h1>Состояние компонента</h1> */}
 
@@ -121,7 +136,7 @@ class App extends Component {
 
         {/* <ColorPicker options={colorPickerOptions} /> */}
 
-        <div>
+        {/* <div>
           <p>Общее кол-во: {TotalTodoCount}</p>
           <p>Кол-во выполненных: {CompletedTodoCount}</p>
         </div>
@@ -134,7 +149,7 @@ class App extends Component {
           todos={visibleTodos}
           onDeleteTodo={this.deleteTodo}
           onToggleCompleted={this.toggleCompleted}
-        />
+        /> */}
       </>
     );
   }
